@@ -1,6 +1,8 @@
 # Simple Compiler Utility
 ### *Super Simple, Compiler-Abstract, C/C++ Compiling Utility*
 
+**At the moment this project has only been tested and compiled on the linux distro ubuntu. I will be testing and updating the code soon for windows support!**
+
 ## How to Use
 
 The only binary I have avaliable at the moment is the `main` which was built on ubuntu with gcc. At the moment, the only configured compiler is `g++`, but due to the architecture of this program, writing in different compilers is super easy.
