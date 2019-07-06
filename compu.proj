@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding=''?>
+<Project>
+    <Directories>
+        <src_dir>./src/source/</src_dir>
+        <bin_dir>./bin/</bin_dir>
+        <obj_dir>./obj/</obj_dir>
+    </Directories>
+    <Settings>
+        <OutputFile>main</OutputFile>
+        <FileType>0</FileType>
+    </Settings>
+    <Includes>
+        <dir>./src/headers</dir>
+    </Includes>
+    <Dependancies>
+    </Dependancies>
+</Project>
