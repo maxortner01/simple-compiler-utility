@@ -12,3 +12,7 @@ The other acceptable arguments are `clean` and `recompile`. The former will remo
 ## Why Use SCU
 
 I have found myself over the years growing increasingly resentful towards the tools out there used for compiling. Writing make files or cmake configurations for each project can be a total drag. Therefore, I wanted a utility that I can simply run in my project's directory and do all the heavy lifting. Another *very* important thing for me, is platform portability. Therefore, I strive to make this utility completely platform and compiler independent. 
+
+## External Dependancies
+
+SCU uses no external dependancies that are located outside of the `src/headers` folder. It uses the header-only spdlog library, as well as the tinyxml2 library for parsing the xml-based project files.
