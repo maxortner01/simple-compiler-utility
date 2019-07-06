@@ -9,7 +9,7 @@ The only binary I have avaliable at the moment is the `main` which was built on 
 
 To make a project, go to your projects root directory with the executable and run it with the argument `makeproject [name]` (where name is the name of your project). SCU will generate a `.proj` file which you need to fill out. **Includes and libraries are not necessary, the other information is.** Now you can run the executable with no arguments, or with a `compile` argument, and it will compile with the information you gave it.
 
-The other acceptable arguments are `clean` and `recompile`. The former will remove all files in the `obj` directory (gathered non-recursivly), and the latter with `clean` and then `compile` each project.
+The other acceptable arguments are `clean` and `recompile`. The former will remove all files in the `obj` directory (gathered non-recursively), and the latter will `clean` and then `compile` each project.
 
 ## Why Use SCU
 
