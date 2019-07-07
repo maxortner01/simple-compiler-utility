@@ -59,11 +59,19 @@ namespace compu
         struct stat result;
         if (stat(ofile.c_str(), &result) == 0)
         {
+#ifndef WIN32
             o_mod = result.st_mtim.tv_sec;
+#else
+            o_mod = (int)result.st_mtime;
+#endif
         }
         if (stat(cppfile, &result) == 0)
         {
+#ifndef WIN32
             c_mod = result.st_mtim.tv_sec;
+#else
+            c_mod = (int)result.st_mtime;
+#endif
         }
 
         if (o_mod - c_mod == 0)
