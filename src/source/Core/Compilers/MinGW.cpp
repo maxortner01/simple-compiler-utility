@@ -4,6 +4,7 @@
 #ifndef WIN32
 #include <unistd.h>
 #else
+#include <windows.h>
 #define stat _stat
 #endif
 
@@ -95,11 +96,30 @@ namespace compu
         executeCommand(command);
 
 #ifndef WIN32
+        // Using Ubuntu's simple, elegent way of changint file modification times 
         executeCommand("touch " + std::string(cppfile));
         executeCommand("touch " + ofile);
-#else
-        executeCommand("type nul >> " + std::string(cppfile));
-        executeCommand("type nul >> " + ofile);
+#else   
+        // Using windows' overlly verbose API to handle changing the file modification times 
+        SYSTEMTIME systemtime;
+        GetSystemTime(&systemtime);
+
+        FILETIME filetime;
+        SystemTimeToFileTime(&systemtime, &filetime);
+
+        HANDLE cpp_filename = CreateFile(cppfile, FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE,
+            NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            
+        SetFileTime(cpp_filename, (LPFILETIME)NULL, (LPFILETIME)NULL, &filetime);
+
+        CloseHandle(cpp_filename);
+
+        HANDLE o_filename = CreateFile(ofile.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE,
+            NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            
+        SetFileTime(o_filename, (LPFILETIME)NULL, (LPFILETIME)NULL, &filetime);
+
+        CloseHandle(o_filename);
 #endif
 
         return COMP_OK;
