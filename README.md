@@ -1,8 +1,6 @@
 # Simple Compiler Utility
 ### *Super Simple, Compiler-Abstract, C/C++ Compiling Utility*
 
-**At the moment this project has only been tested and compiled on the linux distro ubuntu. I will be testing and updating the code soon for windows support!**
-
 ## Why Use SCU
 
 I have found myself over the years growing increasingly resentful towards the tools out there used for compiling. Writing make files or cmake configurations for each project can be a total drag. Therefore, I wanted a utility that I can simply run in my project's directory and do all the heavy lifting. Another *very* important thing for me, is platform portability. Therefore, I strive to make this utility completely platform and compiler independent. 
