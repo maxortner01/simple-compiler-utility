@@ -22,7 +22,7 @@ namespace compu
 
         for (int i = (unsigned int)strlen(cppfile) - 1; i < (unsigned int)strlen(cppfile); i--)
         {
-            if (cppfile[i] == '.')
+            /**/ if (cppfile[i] == '.')
             {
                 dot = i;
             }
@@ -88,7 +88,6 @@ namespace compu
         for (int i = 0; i < files.size(); i++)
             command += files.at(i) + " ";
 
-
         std::pair<std::vector<std::string>*, std::string> lists[] = {
             { &proj->getLibraryDirectories(), "-L" },
             { &proj->getLibraryFiles()      , "-l" }
@@ -97,6 +96,9 @@ namespace compu
         for (int k = 0; k < 2; k++)
             for (int i = 0; i < lists[k].first->size(); i++)
                 command += lists[k].second + lists[k].first->at(i) + " ";
+
+        if (proj->getProjectType() == Executable)
+            command += " -static";
 
         //COMP_DEBUG(command);
         executeCommand(command);
