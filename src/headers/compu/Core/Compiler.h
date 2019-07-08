@@ -29,7 +29,9 @@ namespace compu
         static std::string executeCommand(const std::string &command);
 
     public: 
-        void changeDirectory(const char* dir);
+        void changeDirectory(const char* dir) const;
+        void makeFileModTimeCurrent(const char* file) const;
+        int  getFileModTime(const char* file) const;
 
         COMP_BODY_DEF(virtual, = 0;);
     };

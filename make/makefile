@@ -18,7 +18,7 @@ comma:= ,
 space:=$(empty) $(empty)
 
 main: $(OBJ_FILES)
-	g++ -o $(OUT_DIR)/$(EXE_NAME)$(EXTENSION) $^ 
+	g++ -o $(OUT_DIR)/$(EXE_NAME)$(EXTENSION) $^ -static
 
 clean:
 	rm $(OBJ_FILES)

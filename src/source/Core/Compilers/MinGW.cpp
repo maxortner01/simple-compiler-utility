@@ -1,15 +1,6 @@
 #include "compu/Core/Compilers/MinGW.h"
 #include "compu/Core/Project.h"
 
-#ifndef WIN32
-#include <unistd.h>
-#else
-#include <windows.h>
-#define stat _stat
-#endif
-
-#include <iostream>
-
 namespace compu
 {
     std::string MinGW::getStaticExtension() const 
@@ -55,25 +46,8 @@ namespace compu
         std::string ofile = proj->getDirectories().obj + cpp_file + ".o";
 
         // Get the system modification times for both
-        int o_mod = -1;
-        int c_mod = -1;
-        struct stat result;
-        if (stat(ofile.c_str(), &result) == 0)
-        {
-#ifndef WIN32
-            o_mod = result.st_mtim.tv_sec;
-#else
-            o_mod = (int)result.st_mtime;
-#endif
-        }
-        if (stat(cppfile, &result) == 0)
-        {
-#ifndef WIN32
-            c_mod = result.st_mtim.tv_sec;
-#else
-            c_mod = (int)result.st_mtime;
-#endif
-        }
+        int o_mod = getFileModTime(ofile.c_str());
+        int c_mod = getFileModTime(cppfile);
 
         if (o_mod - c_mod == 0)
             return COMP_OK;
@@ -95,32 +69,8 @@ namespace compu
         //COMP_DEBUG(command);
         executeCommand(command);
 
-#ifndef WIN32
-        // Using Ubuntu's simple, elegent way of changint file modification times 
-        executeCommand("touch " + std::string(cppfile));
-        executeCommand("touch " + ofile);
-#else   
-        // Using windows' overlly verbose API to handle changing the file modification times 
-        SYSTEMTIME systemtime;
-        GetSystemTime(&systemtime);
-
-        FILETIME filetime;
-        SystemTimeToFileTime(&systemtime, &filetime);
-
-        HANDLE cpp_filename = CreateFile(cppfile, FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE,
-            NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-            
-        SetFileTime(cpp_filename, (LPFILETIME)NULL, (LPFILETIME)NULL, &filetime);
-
-        CloseHandle(cpp_filename);
-
-        HANDLE o_filename = CreateFile(ofile.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE,
-            NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-            
-        SetFileTime(o_filename, (LPFILETIME)NULL, (LPFILETIME)NULL, &filetime);
-
-        CloseHandle(o_filename);
-#endif
+        makeFileModTimeCurrent(cppfile);
+        makeFileModTimeCurrent(ofile.c_str());
 
         return COMP_OK;
     }
@@ -158,6 +108,8 @@ namespace compu
     {
 #ifndef WIN32
         executeCommand("rm " + dir);
+#else
+        executeCommand("del " + dir);
 #endif
     }
 }
